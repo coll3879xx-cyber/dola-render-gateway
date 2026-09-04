@@ -1,0 +1,405 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dola Pool Admin Dashboard</title>
+<style>
+:root{--bg:#f2f5f4;--card:#fff;--line:#e5e9e8;--text:#1f2a28;--sub:#7a8a86;--accent:#00a870;--accent-d:#008e5d;--red:#e5484d;--orange:#f59e0b;--blue:#3b82f6;--gray:#9aa8a4}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+a{color:var(--accent);text-decoration:none}
+header{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 20px;background:var(--card);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:16px}
+.dot{width:12px;height:12px;border-radius:3px;background:var(--accent)}
+.head-r{display:flex;align-items:center;gap:14px;color:var(--sub);font-size:13px}
+.head-r label{display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none}
+nav{display:flex;gap:4px;padding:12px 20px 0;border-bottom:1px solid var(--line);background:var(--bg)}
+nav button{border:none;background:none;padding:10px 16px;font-size:14px;color:var(--sub);cursor:pointer;border-bottom:2px solid transparent}
+nav button.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+main{padding:20px;max-width:1180px;margin:0 auto}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px}
+.card h3{font-size:14px;margin-bottom:14px;font-weight:600}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
+.stat{padding:16px;border-radius:12px;color:#fff;display:flex;flex-direction:column;gap:6px}
+.stat .v{font-size:28px;font-weight:700}
+.stat .l{font-size:13px;opacity:.85}
+.s1{background:linear-gradient(135deg,#00b875,#00945f)}.s2{background:linear-gradient(135deg,#e5484d,#b93237)}
+.s3{background:linear-gradient(135deg,#3b82f6,#2563eb)}.s4{background:linear-gradient(135deg,#f59e0b,#d97706)}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:middle;font-size:13px}
+th{color:var(--sub);font-weight:500;white-space:nowrap}
+td .prompt{display:block;max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.badge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;white-space:nowrap}
+.b-green{background:#e6f7f0;color:#00945f}.b-red{background:#fdeaea;color:#c03237}
+.b-orange{background:#fef4e6;color:#c77a00}.b-blue{background:#e8f1fe;color:#2563eb}
+.b-gray{background:#eef1f0;color:#7a8a86}
+.btn{border:1px solid var(--line);background:#fff;color:var(--text);padding:7px 14px;border-radius:8px;cursor:pointer;font-size:13px}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn-p{background:var(--accent);color:#fff;border:none}
+.btn-p:hover{background:var(--accent-d);color:#fff}
+.btn-danger{color:#c03237}
+.btn-danger:hover{border-color:#e5484d;color:#e5484d}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.toolbar .hint{color:var(--sub);font-size:12px}
+.sw{position:relative;display:inline-block;width:36px;height:20px}
+.sw input{opacity:0;width:0;height:0}
+.sw i{position:absolute;inset:0;background:#cfd8d5;border-radius:999px;transition:.2s;cursor:pointer}
+.sw i:before{content:"";position:absolute;width:16px;height:16px;left:2px;top:2px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.sw input:checked+i{background:var(--accent)}
+.sw input:checked+i:before{transform:translateX(16px)}
+.mask{position:fixed;inset:0;background:rgba(20,30,28,.45);display:flex;align-items:center;justify-content:center;z-index:100}
+.mask .box{background:#fff;border-radius:14px;padding:28px;width:320px}
+.mask h2{font-size:17px;margin-bottom:18px}
+.mask input{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:8px;margin-bottom:14px;font-size:14px}
+.mask .err{color:#c03237;font-size:12px;margin-bottom:10px;display:none}
+.mask button{width:100%}
+.dialog{position:fixed;inset:0;background:rgba(20,30,28,.45);display:flex;align-items:center;justify-content:center;z-index:90}
+.dialog .box{background:#fff;border-radius:14px;padding:24px;width:400px;max-width:92vw;max-height:86vh;overflow:auto}
+.dialog h2{font-size:16px;margin-bottom:16px}
+.dialog label{display:block;font-size:12px;color:var(--sub);margin:10px 0 4px}
+.dialog input{width:100%;padding:8px 12px;border:1px solid var(--line);border-radius:8px;font-size:13px}
+.dialog .row{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+.keyfull{font-family:monospace;background:#f5f7f6;border:1px dashed var(--line);border-radius:8px;padding:12px;word-break:break-all;margin:10px 0}
+.chart{display:flex;align-items:flex-end;gap:14px;height:140px;padding:0 4px}
+.chart .col{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;height:100%;justify-content:flex-end}
+.chart .bars{display:flex;gap:4px;align-items:flex-end;height:110px}
+.chart .bar{border-radius:3px 3px 0 0;width:16px}
+.chart .lbl{font-size:11px;color:var(--sub)}
+.empty{padding:34px;text-align:center;color:var(--sub)}
+.video-wrap{display:flex;gap:8px;align-items:center}
+.tiny{font-size:12px;color:var(--sub)}
+.account-id{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;color:#52615d;font-weight:600}
+</style>
+</head>
+<body>
+<div id="loginMask" class="mask" style="display:none">
+  <div class="box">
+    <h2>Admin Dashboard Login</h2>
+    <input id="loginKey" type="password" placeholder="Admin Password" onkeydown="if(event.key==='Enter')submitLogin()">
+    <div class="err" id="loginErr">Incorrect password</div>
+    <button class="btn btn-p" onclick="submitLogin()">Login</button>
+  </div>
+</div>
+
+<header>
+  <div class="brand"><span class="dot"></span>Dola Pool Dashboard</div>
+  <div class="head-r">
+    <label><input type="checkbox" id="autoCk" checked onchange="autoRefresh=this.checked">Auto Refresh</label>
+    <span id="lastUpdate"></span>
+    <button class="btn" onclick="refresh()">Refresh</button>
+    <button class="btn" onclick="logout()" title="Logout">Logout</button>
+  </div>
+</header>
+
+<nav>
+  <button class="on" data-tab="dash" onclick="switchTab('dash')">Dashboard</button>
+  <button data-tab="accounts" onclick="switchTab('accounts')">Accounts</button>
+  <button data-tab="tasks" onclick="switchTab('tasks')">Task Queue</button>
+  <button data-tab="keys" onclick="switchTab('keys')">API Keys</button>
+</nav>
+
+<main>
+  <section id="tab-dash">
+    <div class="cards" id="statCards"></div>
+    <div class="card"><h3>7-Day Video Generation Trend</h3><div class="chart" id="chart"></div></div>
+    <div class="card"><h3>Account Pool Overview</h3><div id="perAccount"></div></div>
+  </section>
+
+  <section id="tab-accounts" style="display:none">
+    <div class="card">
+      <div class="toolbar">
+        <h3 style="margin:0">Account List</h3>
+        <button class="btn btn-p" onclick="openAddAccount()">＋ Add Account</button>
+      </div>
+      <div id="accountsTable"></div>
+    </div>
+  </section>
+
+  <section id="tab-tasks" style="display:none">
+    <div class="card"><h3>Task Queue (Last 50)</h3><div id="tasksTable"></div></div>
+  </section>
+
+  <section id="tab-keys" style="display:none">
+    <div class="card">
+      <div class="toolbar">
+        <h3 style="margin:0">API Keys</h3>
+        <button class="btn btn-p" onclick="openCreateKey()">＋ Create API Key</button>
+      </div>
+      <div class="hint" style="margin-bottom:12px">Each Key can configure daily quota, concurrency, and durations; 0 = unlimited. Environment keys are always active and not listed here.</div>
+      <div id="keysTable"></div>
+    </div>
+  </section>
+</main>
+
+<div id="dlg" class="dialog" style="display:none"><div class="box" id="dlgBox"></div></div>
+<div id="videoModal" class="dialog" style="display:none">
+  <div class="box" style="width:640px">
+    <h2>Video Preview</h2>
+    <video id="videoEl" controls autoplay style="width:100%;border-radius:8px"></video>
+    <div class="row"><button class="btn" onclick="closeVideo()">Close</button></div>
+  </div>
+</div>
+
+<script>
+const LS_KEY='dola_admin_key';
+let adminKey=localStorage.getItem(LS_KEY)||'';
+let autoRefresh=true, curTab='dash', timer=null;
+
+function q(s){return document.querySelector(s);}
+function show(id){document.getElementById(id).style.display='flex';}
+function hide(id){document.getElementById(id).style.display='none';}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function fmt(ts){if(!ts)return '-';const d=new Date(ts*1000);const p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;}
+function fmtHM(ts){const d=new Date(ts*1000);const p=n=>String(n).padStart(2,'0');return `${p(d.getHours())}:${p(d.getMinutes())}`;}
+
+async function api(path,opts={}){
+  const r=await fetch(path,{method:opts.method||'GET',headers:{'Content-Type':'application/json','X-Admin-Key':adminKey,...(opts.headers||{})},body:opts.body?JSON.stringify(opts.body):undefined});
+  if(r.status===401){showLogin();throw new Error('unauthorized');}
+  const text=await r.text();
+  let data={};try{data=text?JSON.parse(text):{};}catch(e){}
+  if(!r.ok)throw new Error(data.detail||(`${r.status} ${text.slice(0,120)}`));
+  return data;
+}
+
+function showLogin(){hide('dlg');show('loginMask');q('#loginErr').style.display='none';}
+async function submitLogin(){
+  const key=q('#loginKey').value;
+  try{await api('/api/admin/login',{method:'POST',body:{key}});}
+  catch(e){q('#loginErr').style.display='block';return;}
+  adminKey=key;localStorage.setItem(LS_KEY,key);
+  hide('loginMask');refresh();
+}
+function logout(){adminKey='';localStorage.removeItem(LS_KEY);showLogin();}
+
+function switchTab(t){
+  curTab=t;
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));
+  ['dash','accounts','tasks','keys'].forEach(x=>{q('#tab-'+x).style.display=x===t?'block':'none';});
+  refresh();
+}
+
+async function refresh(){
+  if(q('#loginMask').style.display!=='none')return;
+  q('#lastUpdate').textContent='Updated at '+new Date().toLocaleTimeString();
+  try{
+    if(curTab==='dash')await loadDash();
+    else if(curTab==='accounts')await loadAccounts();
+    else if(curTab==='tasks')await loadTasks();
+    else if(curTab==='keys')await loadKeys();
+  }catch(e){if(e.message!=='unauthorized'){/* silent */}}
+}
+
+/* ---- Dashboard ---- */
+async function loadDash(){
+  const st=await api('/api/admin/stats');
+  const sr=st.success_rate==null?'—':(st.success_rate*100).toFixed(0)+'%';
+  q('#statCards').innerHTML=`
+    <div class="stat s1"><div class="v">${st.today_completed}</div><div class="l">Completed Today</div></div>
+    <div class="stat s2"><div class="v">${st.today_failed}</div><div class="l">Failed Today</div></div>
+    <div class="stat s3"><div class="v">${sr}</div><div class="l">Success Rate</div></div>
+  <div class="stat s4"><div class="v">${st.available_accounts}/${st.total_accounts}</div><div class="l">Available · ${st.total_remaining} Left</div></div>`;
+  const max=Math.max(1,...st.per_day.map(d=>d.completed+d.failed));
+  q('#chart').innerHTML=st.per_day.map(d=>`
+    <div class="col">
+      <div class="bars">
+        <div class="bar" style="height:${Math.round(d.completed/max*100)}px;background:#00b875" title="Generated ${d.completed}"></div>
+        <div class="bar" style="height:${Math.round(d.failed/max*100)}px;background:#e5484d" title="Failed ${d.failed}"></div>
+      </div>
+      <div class="lbl">${d.day}</div>
+    </div>`).join('');
+  q('#perAccount').innerHTML=table(
+    ['Account','Status','Dispatch','Remaining Today','Total Generated','Last Used'],
+    st.per_account.map(a=>[
+      accLabel(a),
+      statusBadge(a),
+      `<label class="sw"><input type="checkbox" ${a.scheduling?'checked':''} onchange="setSched('${a.name}',this.checked)"><i></i></label>`,
+      `<b>${a.used_today}</b> / ${a.limit}<span class="tiny"> (logged)</span>`,
+      a.completed_total||0,
+      fmt(a.last_used_at)
+    ])
+  );
+}
+
+function accLabel(x){return x.email?`<div>${esc(x.email)}</div>`:'<span class="tiny">No Email</span>';}
+function statusBadge(a){
+  if(a.busy)return '<span class="badge b-blue">Generating</span>';
+  if(a.rate_limited)return '<span class="badge b-orange">Rate limited until '+fmt(a.rate_limited_until)+'</span>';
+  if(a.quota_blocked)return '<span class="badge b-orange">Quota blocked until '+fmt(a.quota_blocked_until)+'</span>';
+  if(a.cooling)return '<span class="badge b-orange">Cooldown until '+fmtHM(a.cooldown_until)+'</span>';
+  if(a.login_ok===0)return '<span class="badge b-red">Expired</span>';
+  if(a.login_ok===1)return '<span class="badge b-green">Active</span>';
+  return '<span class="badge b-gray">Unverified</span>';
+}
+
+function table(heads,rows){
+  return `<table><thead><tr>${heads.map(h=>`<th>${h}</th>`).join('')}</tr></thead>
+    <tbody>${rows.length?rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join(''):`<tr><td colspan="${heads.length}" class="empty">No data</td></tr>`}</tbody></table>`;
+}
+
+async function setSched(name,on){
+  try{await api('/api/admin/accounts/'+name,{method:'PATCH',body:{scheduling:on}});}catch(e){alert(e.message);}refresh();
+}
+
+/* ---- Accounts ---- */
+async function loadAccounts(){
+  const [a,j]=await Promise.all([api('/api/admin/accounts'),api('/api/admin/jobs')]);
+  const jobs=j.jobs||{};
+  const rows=a.accounts.map(x=>{
+    const jb=jobs[x.name];
+    const badge=(jb&&jb.kind==='add'&&jb.status==='running')?'<span class="badge b-blue">Adding</span>'
+      :(jb&&jb.kind==='add'&&jb.status==='failed')?'<span class="badge b-red">Add Failed</span>'
+      :statusBadge(x);
+    const warn=(jb&&jb.status==='failed')?' <span class="tiny" title="'+esc(jb.error)+'">⚠</span>':'';
+    return [
+      `<span class="account-id">${esc(x.name)}</span>`,
+      accLabel(x)+warn,
+      badge,
+      `<label class="sw"><input type="checkbox" ${x.scheduling?'checked':''} onchange="setSched('${x.name}',this.checked)"><i></i></label>`,
+      `<b>${x.used_today}</b> / ${x.limit}`,
+      fmt(x.last_used_at),
+      fmt(x.created_at),
+      `<button class="btn" style="margin-right:6px" onclick="verify('${x.name}',this)">Verify</button><button class="btn btn-danger" onclick="delAccount('${x.name}')">Delete</button>`
+    ];
+  });
+  q('#accountsTable').innerHTML=table(['Account ID','Name','Status','Dispatch','Remaining','Last Used','Created At','Actions'],rows);
+}
+
+async function verify(name,btn){
+  btn.disabled=true;const old=btn.textContent;btn.textContent='Verifying…';
+  try{const r=await api('/api/admin/accounts/'+name+'/verify',{method:'POST'});
+    alert(name+' Session: '+(r.ok?'Active ✓':'Expired ✗'));
+  }catch(e){alert(e.message);}
+  btn.disabled=false;btn.textContent=old;refresh();
+}
+
+async function delAccount(name){
+  if(!confirm('Delete account '+name+'? This will remove its profile directory.'))return;
+  try{await api('/api/admin/accounts/'+name,{method:'DELETE'});}catch(e){alert(e.message);}refresh();
+}
+
+function openAddAccount(){
+  let def='acc2';try{const n=document.querySelectorAll('#accountsTable tbody tr').length;def='acc'+(n+1);}catch(e){}
+  showDlg(`<h2>Add Account</h2>
+    <label>Account Name</label><input id="f_name" value="${def}">
+    <label>Google Email</label><input id="f_email" placeholder="xxx@yy.asia">
+    <label>Password</label><input id="f_pass" type="password">
+    <label>TOTP Secret (2FA)</label><input id="f_totp" placeholder="2FA secret">
+    <div class="row"><button class="btn" onclick="hide('dlg')">Cancel</button><button class="btn btn-p" onclick="submitAddAccount()">Start Login</button></div>`);
+}
+async function submitAddAccount(){
+  const body={name:q('#f_name').value.trim(),email:q('#f_email').value.trim(),password:q('#f_pass').value,totp:q('#f_totp').value.trim()};
+  if(!body.name||!body.email||!body.password)return alert('Please enter account name, email and password');
+  try{await api('/api/admin/accounts',{method:'POST',body});}catch(e){return alert(e.message);}
+  hide('dlg');refresh();
+}
+
+/* ---- Task Queue ---- */
+async function loadTasks(){
+  const r=await api('/api/admin/tasks?limit=50');
+  const sb={'queued':'<span class="badge b-gray">Queued</span>','processing':'<span class="badge b-blue">Processing</span>','completed':'<span class="badge b-green">Completed</span>','failed':'<span class="badge b-red">Failed</span>'};
+  const rows=r.tasks.map(t=>[
+    '<span class="tiny" title="'+esc(t.id)+'">'+t.id.replace('video_','').slice(0,10)+'</span>',
+    '<span class="prompt" title="'+esc(t.prompt||'')+'">'+esc(t.prompt||'')+'</span>',
+    t.account||'-',
+    t.api_key_name||'—',
+    (t.duration||10)+'s',
+    sb[t.status]||'<span class="badge b-gray">'+esc(t.status)+'</span>',
+    fmt(t.created_at),
+    t.video_url
+      ?'<div class="video-wrap"><a href="'+esc(t.video_url)+'" target="_blank">Open</a><button class="btn" onclick="playVideo(&quot;'+esc(t.video_url)+'&quot;)">Preview</button></div>'
+      :(t.status==='failed'?'<span class="tiny" title="'+esc(t.error||'')+'">'+esc((t.error||'').slice(0,30))+'</span>':'—')
+  ]);
+  q('#tasksTable').innerHTML=table(['Task ID','Prompt','Account','Client','Duration','Status','Created At','Video'],rows);
+}
+
+function playVideo(url){q('#videoEl').src=url;show('videoModal');}
+function closeVideo(){q('#videoEl').pause();q('#videoEl').src='';hide('videoModal');}
+
+/* ---- API Keys ---- */
+async function loadKeys(){
+  const r=await api('/api/admin/keys');
+  const mask=k=>'sk-'+k.slice(3,9)+'…'+k.slice(-4);
+  const rows=r.keys.map(k=>[
+    '<span style="font-family:monospace">'+mask(k.key)+'</span>',
+    k.name||'—',
+    (k.allowed_durations||[]).join(' / ')+' s',
+    (k.daily_limit?`${k.today_total} / ${k.daily_limit}`:`${k.today_total} / Unlimited`),
+    (k.concurrency_limit?`${k.today_active} / ${k.concurrency_limit}`:`${k.today_active} / Unlimited`)+(k.today_queued?` <span class=\"tiny\">Queued ${k.today_queued}</span>`:''),
+    `<label class="sw"><input type="checkbox" ${k.enabled?'checked':''} onchange="setKey('${k.key}',this.checked)"><i></i></label>`,
+    fmt(k.last_used_at),
+    `<button class="btn" style="margin-right:6px" onclick="openEditKey('${k.key}')">Config</button><button class="btn btn-danger" onclick="delKey('${k.key}')">Delete</button>`
+  ]);
+  q('#keysTable').innerHTML=table(['Key','Name','Allowed Duration','Tasks Today','Concurrency','Enabled','Last Used','Actions'],rows)
+    +(r.env_keys>0?`<div class="hint" style="margin-top:10px">${r.env_keys} environment key(s) (always valid, read-only)</div>`:"");
+}
+async function setKey(key,on){
+  try{await api('/api/admin/keys/'+encodeURIComponent(key),{method:'PATCH',body:{enabled:on}});}catch(e){alert(e.message);}refresh();
+}
+async function delKey(key){
+  if(!confirm('Delete this API key? External callers will fail immediately.'))return;
+  try{await api('/api/admin/keys/'+encodeURIComponent(key),{method:'DELETE'});}catch(e){alert(e.message);}refresh();
+}
+function durationChecks(values){
+  values=values||[10,15,30];
+  return [10,15,30].map(v=>`<label style="display:inline-flex;align-items:center;gap:4px;margin-right:12px"><input type="checkbox" id="f_d${v}" ${values.includes(v)?'checked':''}>${v}s</label>`).join('');
+}
+function openCreateKey(){
+  showDlg(`<h2>Create API Key</h2>
+    <label>Name (Optional)</label><input id="f_kname" placeholder="e.g. Client A">
+    <label>Daily Task Limit (0 = Unlimited)</label><input id="f_daily" type="number" min="0" value="0">
+    <label>Concurrency Limit (0 = Unlimited)</label><input id="f_conc" type="number" min="0" value="0">
+    <label>Allowed Video Durations</label><div style="padding:8px 0">${durationChecks()}</div>
+    <label>Expiration Timestamp (Optional, Empty = Permanent)</label><input id="f_exp" type="number" min="0" placeholder="Unix Timestamp">
+    <div class="row"><button class="btn" onclick="hide('dlg')">Cancel</button><button class="btn btn-p" onclick="submitCreateKey()">Create</button></div>`);
+}
+function selectedDurations(){return [10,15,30].filter(v=>q('#f_d'+v)?.checked);}
+async function submitCreateKey(){
+  const name=q('#f_kname').value.trim();
+  const allowed=selectedDurations();
+  if(!allowed.length)return alert('Please select at least one duration');
+  const body={name,daily_limit:Number(q('#f_daily').value||0),concurrency_limit:Number(q('#f_conc').value||0),allowed_durations:allowed};
+  const exp=q('#f_exp').value.trim();if(exp)body.expires_at=Number(exp);
+  try{
+    const r=await api('/api/admin/keys',{method:'POST',body});
+    const k=r.created.key;
+    hide('dlg');
+    showDlg(`<h2>Key Created Successfully</h2>
+      <div class="tiny">Full API key is only displayed once:</div>
+      <div class="keyfull" id="newKey">${esc(k)}</div>
+      <div class="row"><button class="btn" onclick="copyFromNewKey()">Copy</button><button class="btn btn-p" onclick="hide('dlg');loadKeys()">Done</button></div>`);
+  }catch(e){alert(e.message);}
+}
+async function openEditKey(key){
+  const r=await api('/api/admin/keys');const k=r.keys.find(x=>x.key===key);if(!k)return;
+  showDlg(`<h2>Configure API Key</h2>
+    <div class="tiny" style="margin-bottom:8px">${esc(k.name||key)}</div>
+    <label>Daily Task Limit (0 = Unlimited)</label><input id="f_daily" type="number" min="0" value="${k.daily_limit}">
+    <label>Concurrency Limit (0 = Unlimited)</label><input id="f_conc" type="number" min="0" value="${k.concurrency_limit}">
+    <label>Allowed Video Durations</label><div style="padding:8px 0">${durationChecks(k.allowed_durations)}</div>
+    <label>Expiration Timestamp (0 = Permanent)</label><input id="f_exp" type="number" min="0" value="${k.expires_at||0}">
+    <div class="row"><button class="btn" onclick="hide('dlg')">Cancel</button><button class="btn btn-p" onclick="submitEditKey('${key}')">Save</button></div>`);
+}
+async function submitEditKey(key){
+  const allowed=selectedDurations();if(!allowed.length)return alert('Please select at least one duration');
+  try{await api('/api/admin/keys/'+encodeURIComponent(key),{method:'PATCH',body:{daily_limit:Number(q('#f_daily').value||0),concurrency_limit:Number(q('#f_conc').value||0),allowed_durations:allowed,expires_at:Number(q('#f_exp').value||0)}});hide('dlg');refresh();}catch(e){alert(e.message);}
+}
+function copyFromNewKey(){copy(q('#newKey').textContent.trim());}
+async function copy(text){
+  try{await navigator.clipboard.writeText(text);}catch(e){
+    const t=document.createElement('textarea');t.value=text;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();
+  }
+}
+
+function showDlg(html){q('#dlgBox').innerHTML=html;show('dlg');}
+
+/* Init: auth check */
+(async function boot(){
+  try{ await api('/api/admin/accounts'); hide('loginMask'); refresh(); }
+  catch(e){ /* 401 handled */ }
+})();
+timer=setInterval(()=>{if(autoRefresh)refresh();},10000);
+</script>
+</body>
+</html>

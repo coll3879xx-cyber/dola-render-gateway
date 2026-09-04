@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "Dola Pro Engine (30s Unlock & Watermark Removal)",
+  "version": "1.0.0",
+  "description": "Unlocks 15s-30s durations and extracts original master video and image resources for Dola and Doubao.",
+  "permissions": [
+    "debugger",
+    "tabs",
+    "downloads"
+  ],
+  "host_permissions": [
+    "*://*.doubao.com/*",
+    "*://*.dola.com/*",
+    "*://*.byteintlapi.com/*"
+  ],
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.doubao.com/*",
+        "*://*.dola.com/*"
+      ],
+      "js": [
+        "content-panel.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "Dola Pro Engine"
+  }
+}

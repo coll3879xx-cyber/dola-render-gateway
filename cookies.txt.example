@@ -1,0 +1,4 @@
+# One dola.com account cookie per line (must include msToken=, s_v_web_id=, sessionid=)
+# How to obtain: Log into https://www.dola.com -> F12 -> Network -> any request -> Headers -> Cookie
+# Lines starting with # are comments. Example (placeholder, replace with real cookie):
+# msToken=xxxx; s_v_web_id=ver_xxxx; sessionid=xxxx; passport_auth_status=xxxx; sid_guard=xxxx

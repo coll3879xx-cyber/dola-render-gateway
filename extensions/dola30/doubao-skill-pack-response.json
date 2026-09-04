@@ -1,0 +1,181 @@
+{
+	"code": 0,
+	"msg": "",
+	"data": {
+		"deep_search": {
+			"template": {}
+		},
+		"video_generation": {
+			"meta": {
+				"title": "视频生成",
+				"desc": "自由运镜，图片文字一键成片",
+				"option_list": [{
+					"type": 3,
+					"value": "duration",
+					"show_name": "",
+					"options": [{
+						"show_name": "5s",
+						"value": "5",
+						"is_default": false,
+						"sub_display": ""
+					}, {
+						"show_name": "10s",
+						"value": "10",
+						"is_default": true,
+						"sub_display": ""
+					}, {
+						"show_name": "30s",
+						"value": "30",
+						"is_default": false,
+						"sub_display": ""
+					}]
+				}, {
+					"type": 3,
+					"value": "model",
+					"show_name": "",
+					"options": [{
+						"show_name": "Seedance2.0",
+						"value": "seedance_v2.0_std",
+						"is_default": false,
+						"after_key": "https://lf-flow-web-cdn.doubao.com/obj/flow-doubao/samantha/creation/member_badge_enhanced.svg",
+						"sub_display": "",
+						"icon_url": "https://lf-flow-web-cdn.doubao.com/obj/flow-doubao/samantha/creation/member_badge_enhanced.svg",
+						"subscription_tag": "none"
+					}, {
+						"show_name": "Seedance2.0Fast",
+						"value": "seedance_v2.0",
+						"is_default": false,
+						"sub_display": "",
+						"subscription_tag": "none"
+					}, {
+						"show_name": "Seedance2.0Mini",
+						"value": "seedance_v2.0_mini",
+						"is_default": true,
+						"sub_display": "",
+						"subscription_tag": "none"
+					}]
+				}, {
+					"type": 3,
+					"value": "movement",
+					"show_name": "",
+					"options": [{
+						"show_name": "固定镜头",
+						"value": "固定镜头",
+						"is_default": false,
+						"sub_display": ""
+					}, {
+						"show_name": "镜头环绕",
+						"value": "镜头环绕${cameraMove_panAround_subject}拍摄",
+						"is_default": false,
+						"sub_display": ""
+					}, {
+						"show_name": "镜头移动",
+						"value": "镜头往${cameraMove_moveTowards_direction}移动",
+						"is_default": false,
+						"sub_display": ""
+					}, {
+						"show_name": "镜头变焦",
+						"value": "镜头聚焦在${cameraMove_focusOn_subject}",
+						"is_default": false,
+						"sub_display": ""
+					}]
+				}, {
+					"type": 1,
+					"value": "shot_newShot_desc",
+					"show_name": "",
+					"placeholder": {
+						"placeholder": "[描述下一幕的画面]",
+						"default_text": ""
+					}
+				}, {
+					"type": 1,
+					"value": "story_board",
+					"show_name": "",
+					"placeholder": {
+						"placeholder": "镜头切换，${shot_newShot_desc}",
+						"default_text": ""
+					}
+				}, {
+					"type": 1,
+					"value": "cameraMove_moveTowards_direction",
+					"show_name": "",
+					"placeholder": {
+						"placeholder": "[方向]",
+						"default_text": ""
+					}
+				}, {
+					"type": 1,
+					"value": "cameraMove_panAround_subject",
+					"show_name": "",
+					"placeholder": {
+						"placeholder": "[主体]",
+						"default_text": ""
+					}
+				}, {
+					"type": 3,
+					"value": "ratio",
+					"show_name": "",
+					"options": [{
+						"show_name": "1:1",
+						"value": "1:1",
+						"is_default": true,
+						"sub_display": ""
+					}, {
+						"show_name": "3:4",
+						"value": "3:4",
+						"is_default": false,
+						"sub_display": ""
+					}, {
+						"show_name": "4:3",
+						"value": "4:3",
+						"is_default": false,
+						"sub_display": ""
+					}, {
+						"show_name": "9:16",
+						"value": "9:16",
+						"is_default": false,
+						"sub_display": ""
+					}, {
+						"show_name": "16:9",
+						"value": "16:9",
+						"is_default": false,
+						"sub_display": ""
+					}, {
+						"show_name": "21:9",
+						"value": "21:9",
+						"is_default": false,
+						"sub_display": ""
+					}]
+				}, {
+					"type": 1,
+					"value": "cameraMove_focusOn_subject",
+					"show_name": "",
+					"placeholder": {
+						"placeholder": "[主体]",
+						"default_text": ""
+					}
+				}],
+				"model_capability": {
+					"seedance_v2.0": {
+						"supported_durations": ["5", "10", "30"],
+						"supported_resolutions": ["720p"],
+						"support_video_ref": false
+					},
+					"seedance_v2.0_mini": {
+						"supported_durations": ["5", "10", "30"],
+						"supported_resolutions": ["720p"],
+						"support_video_ref": false
+					},
+					"seedance_v2.0_std": {
+						"supported_durations": ["5", "10", "30"],
+						"supported_resolutions": ["720p"],
+						"support_video_ref": false
+					}
+				}
+			},
+			"template": {
+				"item_list": []
+			}
+		}
+	}
+}

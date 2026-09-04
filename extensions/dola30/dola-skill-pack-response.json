@@ -1,0 +1,100 @@
+{
+	"code": 0,
+	"msg": "",
+	"data": {
+		"deep_search": {
+			"template": {}
+		},
+		"video_generation": {
+			"meta": {
+				"title": "视频生成",
+				"desc": "自由运镜，图片文字一键成片",
+				"option_list": [{
+					"type": 3,
+					"value": "ratio",
+					"show_name": "",
+					"options": [{
+						"show_name": "1:1",
+						"value": "1:1",
+						"is_default": true,
+						"sub_display": ""
+					}, {
+						"show_name": "3:4",
+						"value": "3:4",
+						"is_default": false,
+						"sub_display": ""
+					}, {
+						"show_name": "4:3",
+						"value": "4:3",
+						"is_default": false,
+						"sub_display": ""
+					}, {
+						"show_name": "9:16",
+						"value": "9:16",
+						"is_default": false,
+						"sub_display": ""
+					}, {
+						"show_name": "16:9",
+						"value": "16:9",
+						"is_default": false,
+						"sub_display": ""
+					}, {
+						"show_name": "21:9",
+						"value": "21:9",
+						"is_default": false,
+						"sub_display": ""
+					}]
+				}, {
+					"type": 3,
+					"value": "duration",
+					"show_name": "",
+					"options": [{
+						"show_name": "5s",
+						"value": "5",
+						"is_default": false,
+						"sub_display": ""
+					}, {
+						"show_name": "10s",
+						"value": "10",
+						"is_default": true,
+						"sub_display": ""
+					}, {
+						"show_name": "30s",
+						"value": "30",
+						"is_default": false,
+						"sub_display": ""
+					}]
+				}, {
+					"type": 3,
+					"value": "model",
+					"show_name": "",
+					"options": [{
+						"show_name": "Seedance2.0Fast",
+						"value": "seedance_v2.0",
+						"is_default": true,
+						"sub_display": "DreaminaSeedance2.0",
+						"subscription_tag": "none"
+					}, {
+						"show_name": "Seedance1.0Fast",
+						"value": "ic_mini",
+						"is_default": false,
+						"sub_display": "DreaminaSeedance1.0Fast",
+						"subscription_tag": "none"
+					}]
+				}],
+				"model_capability": {
+					"ic_mini": {
+						"supported_durations": ["5", "10", "30"],
+						"supported_resolutions": ["720p"],
+						"support_video_ref": false
+					},
+					"seedance_v2.0": {
+						"supported_durations": ["5", "10", "30"],
+						"supported_resolutions": ["720p"],
+						"support_video_ref": false
+					}
+				}
+			}
+		}
+	}
+}
