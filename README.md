@@ -1,4 +1,4 @@
-# Video Generation Gateway (Dola Seedance Core)
+# Dola Render Gateway
 
 A high-performance session coordinator and OpenAI-compatible video generation API service.
 
@@ -27,7 +27,7 @@ Provides automated browser session isolation, task queue distribution, extended 
 ## 📁 Repository Structure
 
 ```
-dola-seedance/
+dola-render-gateway/
 ├── server.py              # FastAPI server (OpenAI-compatible video API & admin routes)
 ├── browser_pool.py        # Account pool concurrency manager and task scheduler
 ├── browser.py             # Playwright persistent context launcher
