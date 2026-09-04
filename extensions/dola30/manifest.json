@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Dola Pro Engine (30s Unlock & Watermark Removal)",
+  "name": "Dola Studio Profile Extension",
   "version": "1.0.0",
-  "description": "Unlocks 15s-30s durations and extracts original master video and image resources for Dola and Doubao.",
+  "description": "Developer profile extension for session management and media handling.",
   "permissions": [
     "debugger",
     "tabs",
@@ -29,6 +29,6 @@
     }
   ],
   "action": {
-    "default_title": "Dola Pro Engine"
+    "default_title": "Dola Studio Profile"
   }
 }
