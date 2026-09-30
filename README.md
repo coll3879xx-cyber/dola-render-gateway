@@ -89,7 +89,7 @@ Open **http://127.0.0.1:8000/web** to access the Admin Dashboard.
 
 ### 💬 Admin & Support
 
-[![Zalo](https://img.shields.io/badge/Zalo-Nhóm%20Zalo-0068FF?style=for-the-badge&logoColor=white)](https://zalo.me/g/3fxifo1o8g8r6rw3ecxi)
+[![Zalo](https://img.shields.io/badge/Zalo-Nhóm%20Zalo-0068FF?style=for-the-badge&logoColor=white)](https://zalo.me/g/jvwa05y9id3apkgfocw0)
 
 ---
 
